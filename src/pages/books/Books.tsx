@@ -1,46 +1,40 @@
-import {message, Upload, UploadProps} from "antd";
-import {InboxOutlined} from '@ant-design/icons';
-
-const {Dragger} = Upload;
+import {Button, Flex} from "antd";
+import Book from "../../components/Book/Book.tsx";
+import FileDragger from "../../components/FileDragger/FileDragger.tsx";
+import './Books.css';
 const Books = () => {
-    const props: UploadProps = {
-        name: 'file',
-        action: 'http://127.0.0.1:8000/books/load_goodreads_books',
-        headers: {},
-        beforeUpload: (file) => {
-            const isCSV = file.type === 'text/csv' || file.type === 'application/vnd.ms-excel'; // Check if the file is a CSV
-            if (!isCSV) {
-                message.error(`${file.name} is not a csv file`);
-            }
-            return isCSV || Upload.LIST_IGNORE; // Only allow CSV files or ignore the file
-        },
-        onChange(info) {
-            const {status} = info.file;
-            if (status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully.`);
-            } else if (status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-        onDrop(e) {
-            console.log('Dropped files', e.dataTransfer.files);
-        },
-    };
+
+    const books: IBook[] = [{
+        id: 1,
+        bookId: 2,
+        title: 'Harry Potter',
+        description: 'A book about a wizard',
+        url: 'https://www.goodreads.com/book/show/3.Harry_Potter_and_the_Sorcerer_s_Stone',
+        imageUrl: 'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1474154022l/3._SY475_.jpg',
+        rating: 4.5,
+    }, {
+        id: 2,
+        bookId: 3,
+        title: 'The Hobbit',
+        description: 'A book about a hobbit',
+        url: 'https://www.goodreads.com/book/show/5907.The_Hobbit',
+        imageUrl: 'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1372847500l/5907.jpg',
+        rating: 4.5,
+    }];
+
+
     return (
         <>
-            <Dragger {...props}>
-                <p className="ant-upload-drag-icon">
-                    <InboxOutlined/>
-                </p>
-                <p className="ant-upload-text">Kliknij lub upuść plik aby go przesłać</p>
-                <p className="ant-upload-hint">
-                    Prześlij plik CSV z książkami z serwisu Goodreads
-                </p>
-            </Dragger>
+            <FileDragger/>
+            <Flex gap={'large'} wrap={'wrap'} className={"books-list"}>
+                {books.map((book) => (
+                    <Book key={book.title} book={book}/>
+                ))}
+            </Flex>
+            <Flex className={"recommend-field"} align={'center'} justify={"center"}>
+                <Button size={"large"} type="primary">Znajdź remkomendacje</Button>
+            </Flex>
         </>
     )
 };
-    export default Books;
+export default Books;
