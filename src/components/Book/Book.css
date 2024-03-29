@@ -23,3 +23,26 @@
 .toolbar-wrapper .anticon:hover {
     opacity: 0.3;
 }
+
+.preview {
+    padding: 32px;
+    display: flex;
+    flex: auto;
+    flex-direction: row;
+}
+
+.preview-description {
+    color: #fff;
+}
+
+.preview-description-wrapper {
+    width: 100%;
+    height: fit-content;
+    margin-left: 18px;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 6px;
+    background: #333333;
+    opacity: 0.8;
+
+}

@@ -52,6 +52,14 @@ const Book = ({book}: IProps) => {
                     <Spin/>
                 }
                 preview={{
+                    imageRender: (image) => (
+                        <div className={"preview"}>
+                            {image}
+                            <div className={"preview-description-wrapper"}>
+                                <Text className={"preview-description"}>{book.description}</Text>
+                            </div>
+                        </div>
+                    ),
                     toolbarRender: (
                         _,
                         {
