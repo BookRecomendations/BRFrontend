@@ -1,5 +1,4 @@
 import {Flex, Rate, Space, Spin, Typography} from "antd";
-import {useQuery} from "@tanstack/react-query";
 import {Image} from 'antd';
 import {
     GlobalOutlined,
@@ -9,51 +8,21 @@ import {
     ZoomOutOutlined
 } from "@ant-design/icons";
 import './Book.css';
-import {useEffect, useState} from "react";
+
 
 const {Title, Text} = Typography;
 
 interface IProps {
-    book: IBookImportResult;
-}
-
-
-const fetchBook = async (id: number) => {
-    const response = await fetch(`http://127.0.0.1:8000/books/${id}`);
-    return response.json();
-}
-
-const fetchBookStatus = async (task_id: string)  => {
-    const response = await fetch(`http://127.0.0.1:8000/books/status/${task_id}`);
-    console.log(response);
-    return response.json()
+    book: IUserBook;
 }
 
 const Book = ({book}: IProps) => {
 
-    const [bookStatus, setBookStatus] = useState<string | null>(null);
-    // const {data: bookStatusId} = useQuery({
-    //     queryKey: ['book', book.id],
-    //     queryFn: () => fetchBook(book.id),
-    //     enabled: false,
-    // });
-
-    const {data, isLoading, isError} = useQuery({
-        queryKey: ['bookStatus', book.book_task!.book_id],
-        queryFn: () => fetchBookStatus(book.book_task!.task_id),
-        refetchInterval: 1000,
-        enabled: book.status === "running" && bookStatus != "SUCCES",
-    });
-
-    useEffect(() => {
-        if (data)
-            setBookStatus(data.status ?? null)
-    }, [data]);
 
     return (
         <>
-            <Flex vertical justify={'center'} align={'center'}>
-                <Title level={5}>{book.book_task?.title}</Title>
+            <Flex align={"center"} justify={"center"} vertical>
+                <Title level={5} ellipsis={{rows: 2}} className="book-title">{book.title}</Title>
                 <Image
                     width={200}
                     src={book.image_url}
@@ -93,13 +62,15 @@ const Book = ({book}: IProps) => {
                 >
                 </Image>
                 <Flex gap={'small'}>
-                    <Rate value={book.rating} disabled/>
-                    <Text>{book.rating}</Text>
+                    <Rate value={book.user_rating} disabled/>
+                    <Text>{book.average_rating}</Text>
                 </Flex>
-                {data && <Text>{data.status}</Text>}
             </Flex>
         </>
     )
+
 }
 
 export default Book;
+
+

@@ -15,6 +15,8 @@ interface IUserBook extends IBaseBook {
 interface IBookTask extends IBaseBook {
     task_id: string;
     title: string;
+    average_rating: number;
+    user_rating: number;
 }
 
 interface IBookImportResult {

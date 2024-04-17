@@ -1,15 +1,15 @@
 import {Button, Flex, Typography} from "antd";
-import Book from "../../components/Book/Book.tsx";
 import FileDragger from "../../components/FileDragger/FileDragger.tsx";
 
 import './Books.css';
 import {useState} from "react";
+import BookWrapper from "../../components/BookWrapper/BookWrapper.tsx";
+import Book from "../../components/Book/Book.tsx";
 
 const {Title} = Typography;
 
 const Books = () => {
     const [importedBooks, setImportedBooks] = useState<IBookImportResult[]>([]);
-
 
 
     return (
@@ -20,7 +20,9 @@ const Books = () => {
                 <FileDragger setBooks={setImportedBooks}/>
                 <Flex gap={'large'} wrap={'wrap'} className={"books-list"}>
                     {importedBooks.map((book) => (
-                        <Book key={book.book ? book.book.book_id : book.book_task?.book_id} book={book}/>
+                        book.status === "running" ?
+                            <BookWrapper key={book.book_task?.book_id} book={book}/> :
+                            <Book key={book.book?.book_id} book={book.book!}/>
                     ))}
                 </Flex>
                 <Flex className={"recommend-field"} align={'center'} justify={"center"}>

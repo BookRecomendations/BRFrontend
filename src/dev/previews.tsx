@@ -3,6 +3,7 @@ import {PaletteTree} from "./palette";
 import Books from "../pages/books/Books.tsx";
 import PageLayout from "../pages/PageLayout.tsx";
 import Book from "../components/Book/Book.tsx";
+import BookLoading from "../components/BookLoading/BookLoading.tsx";
 
 const ComponentPreviews = () => {
     return (
@@ -23,6 +24,9 @@ const ComponentPreviews = () => {
                     imageUrl: 'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1474154022l/3._SY475_.jpg',
                     rating: 4.5,
                 }}/>
+            </ComponentPreview>
+            <ComponentPreview path="/BookLoading">
+                <BookLoading/>
             </ComponentPreview>
         </Previews>
     );
