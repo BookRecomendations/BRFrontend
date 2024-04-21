@@ -8,21 +8,28 @@ import {
     ZoomOutOutlined
 } from "@ant-design/icons";
 import './Book.css';
+import Checkbox from "antd/es/checkbox/Checkbox";
 
 
 const {Title, Text} = Typography;
 
 interface IProps {
     book: IUserBook;
+    toggleSelectedBook: (book: IUserBook) => void; // Function to toggle the selection
+    selected: boolean; // Boolean to check if the book is selected
 }
 
-const Book = ({book}: IProps) => {
+const Book = ({book, toggleSelectedBook, selected}: IProps) => {
 
 
     return (
         <>
             <Flex align={"center"} justify={"center"} vertical>
                 <Title level={5} ellipsis={{rows: 2}} className="book-title">{book.title}</Title>
+                <Flex gap={'small'}>
+                    <Rate value={book.average_rating} disabled allowHalf/>
+                    <Text>{book.average_rating}</Text>
+                </Flex>
                 <Image
                     width={200}
                     src={book.image_url}
@@ -62,9 +69,10 @@ const Book = ({book}: IProps) => {
                 >
                 </Image>
                 <Flex gap={'small'}>
-                    <Rate value={book.user_rating} disabled/>
-                    <Text>{book.average_rating}</Text>
+                    <Rate value={book.user_rating} disabled allowHalf/>
+                    <Text>{book.user_rating}</Text>
                 </Flex>
+                <Checkbox checked={selected} onClick={() => toggleSelectedBook(book)}>Dodaj do rekomendacji</Checkbox>
             </Flex>
         </>
     )
