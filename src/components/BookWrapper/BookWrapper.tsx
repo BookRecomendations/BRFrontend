@@ -32,7 +32,18 @@ const BookWrapper = ({book}: IProps) => {
         if (data)
             setBookStatus(data.status ?? null)
         if (isSuccess && data.status === "SUCCESS") {
+            console.log({
+                id: data.message.id,
+                book_id: book.book_task!.book_id,
+                title: book.book_task!.title,
+                description: data.message.description,
+                image_url: data.message.image_url,
+                url: data.message.url,
+                user_rating: book.book_task!.user_rating,
+                average_rating: book.book_task!.average_rating,
+            });
             setUserBook({
+                id: data.message.id,
                 book_id: book.book_task!.book_id,
                 title: book.book_task!.title,
                 description: data.message.description,

@@ -15,9 +15,10 @@ interface IProps {
 }
 
 const fetchRecommendations = async (bookIds: number[], count: number) => {
+    bookIds = [1, 2, 3, 4, 5];
     const response = await axios.post(`http://localhost:8000/recommendations/find_recommendations`, {
-        books_ids: bookIds,
-        count
+        ids: bookIds,
+        k: count
     });
     console.log(response);
     return response.data;

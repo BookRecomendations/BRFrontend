@@ -3,6 +3,7 @@ interface IBaseBook {
 }
 
 interface IUserBook extends IBaseBook {
+    id: number;
     title: string;
     description: string;
     url: string;
