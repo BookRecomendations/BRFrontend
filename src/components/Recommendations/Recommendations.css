@@ -7,3 +7,10 @@
 .recommend-field {
     margin-top: 20px;
 }
+
+.recommend-loading {
+    margin-top: 40px;
+}
+.recommendations-loading__text {
+    margin-left: 20px;
+}

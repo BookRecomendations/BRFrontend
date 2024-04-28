@@ -14,17 +14,19 @@ import Checkbox from "antd/es/checkbox/Checkbox";
 const {Title, Text} = Typography;
 
 interface IProps {
-    book: IUserBook;
+    book: IUserBook | IRecommendedBook;
     toggleSelectedBook: (book: IUserBook) => void; // Function to toggle the selection
+    canBeSelected: boolean; // Boolean to check if the book can be selected
     selected: boolean; // Boolean to check if the book is selected
+    similarity?: number; // Number to show the similarity
 }
 
-const Book = ({book, toggleSelectedBook, selected}: IProps) => {
+const Book = ({book, toggleSelectedBook, selected, canBeSelected, similarity}: IProps) => {
 
 
     return (
         <>
-            <Flex align={"center"} justify={"center"} vertical>
+            <Flex className="book" align="center" justify="center" vertical>
                 <Title level={5} ellipsis={{rows: 2}} className="book-title">{book.title}</Title>
                 <Flex gap={'small'}>
                     <Rate value={book.average_rating} disabled allowHalf/>
@@ -68,15 +70,22 @@ const Book = ({book, toggleSelectedBook, selected}: IProps) => {
                     }}
                 >
                 </Image>
-                <Flex gap={'small'}>
-                    <Rate value={book.user_rating} disabled allowHalf/>
-                    <Text>{book.user_rating}</Text>
-                </Flex>
-                <Checkbox checked={selected} onClick={() => toggleSelectedBook(book)}>Dodaj do rekomendacji</Checkbox>
+                {!similarity && 
+                    <Flex gap='small'>
+                        <Rate value={"user_rating" in book ? book.user_rating : 0} disabled allowHalf/>
+                        <Text>{"user_rating" in book ? book.user_rating : 0}</Text>
+                    </Flex>}
+                {similarity &&
+                    <Flex gap='small'>
+                        <Text>Podobieństwo: {(similarity * 100).toFixed(2)}%</Text>
+                    </Flex>}
+                {canBeSelected &&
+                    <Checkbox checked={selected} onClick={() => toggleSelectedBook(book)}>
+                        Dodaj do rekomendacji
+                    </Checkbox>}
             </Flex>
         </>
     )
-
 }
 
 export default Book;

@@ -8,6 +8,8 @@ import Book from "../Book/Book.tsx";
 
 interface IProps {
     book: IBookImportResult;
+    toggleSelectedBook: (book: IUserBook) => void;
+    selected: boolean;
 }
 
 const fetchBookStatus = async (task_id: string) => {
@@ -16,7 +18,7 @@ const fetchBookStatus = async (task_id: string) => {
     return response.data
 }
 
-const BookWrapper = ({book}: IProps) => {
+const BookWrapper = ({book, toggleSelectedBook, selected}: IProps) => {
 
     const [bookStatus, setBookStatus] = useState<string | null>(null);
     const [userBook, setUserBook] = useState<IUserBook | null>(null);
@@ -59,7 +61,9 @@ const BookWrapper = ({book}: IProps) => {
         <div className="book">
             {isLoading && <BookLoading status={"loading"} message={"loading"}/>}
             {isSuccess && data.status != "SUCCESS" && <BookLoading status={data.status} message={data.message}/>}
-            {isSuccess && userBook && data.status == "SUCCESS" && <Book book={userBook!}/>}
+            {isSuccess && userBook && data.status == "SUCCESS" &&
+                <Book canBeSelected={true} book={userBook!} toggleSelectedBook={toggleSelectedBook}
+                      selected={selected}/>}
         </div>
     )
 

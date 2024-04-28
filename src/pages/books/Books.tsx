@@ -1,4 +1,4 @@
-import {Button, Dropdown, Flex, InputNumber, Select, Space, Typography} from "antd";
+import {Button, Flex, Select, Space, Typography} from "antd";
 import FileDragger from "../../components/FileDragger/FileDragger.tsx";
 
 import './Books.css';
@@ -7,7 +7,7 @@ import BookWrapper from "../../components/BookWrapper/BookWrapper.tsx";
 import Book from "../../components/Book/Book.tsx";
 import Recommendations from "../../components/Recommendations/Recommendations.tsx";
 
-const {Title, Text} = Typography;
+const {Title} = Typography;
 
 const Books = () => {
     const [importedBooks, setImportedBooks] = useState<IBookImportResult[]>([]);
@@ -15,8 +15,8 @@ const Books = () => {
     const [score, setScore] = useState<number>(3);
 
     const toggleSelectedBook = (book: IUserBook) => {
-        if (selectedBooks.find(b => b.book_id === book.book_id)) {
-            setSelectedBooks(selectedBooks.filter(b => b.book_id !== book.book_id));
+        if (selectedBooks.find(b => b.id === book.id)) {
+            setSelectedBooks(selectedBooks.filter(b => b.id !== book.id));
         } else {
             setSelectedBooks([...selectedBooks, book]);
         }
@@ -47,10 +47,13 @@ const Books = () => {
                 <Flex gap={'large'} wrap={'wrap'} className={"books-list"}>
                     {importedBooks.map((book) => (
                         book.status === "running" ?
-                            <BookWrapper key={book.book_task?.book_id} book={book}/> :
+                            <BookWrapper key={book.book_task?.book_id} book={book}
+                                         toggleSelectedBook={toggleSelectedBook}
+                                         selected={selectedBooks.some(b => b.book_id === book.book?.book_id)}/> :
                             <Book
                                 key={book.book?.book_id}
                                 book={book.book!}
+                                canBeSelected={true}
                                 toggleSelectedBook={toggleSelectedBook}
                                 selected={selectedBooks.some(b => b.book_id === book.book?.book_id)}
                             />

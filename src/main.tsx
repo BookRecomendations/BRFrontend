@@ -6,6 +6,7 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import Books from "./pages/books/Books.tsx";
 import {DevSupport} from "@react-buddy/ide-toolbox";
 import {ComponentPreviews, useInitial} from "./dev";
+import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
 
 const router = createBrowserRouter([
     {
@@ -23,6 +24,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             >
                 <RouterProvider router={router}/>
             </DevSupport>
+            <ReactQueryDevtools initialIsOpen={false}/>
         </QueryClientProvider>
     </React.StrictMode>,
 )

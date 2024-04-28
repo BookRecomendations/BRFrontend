@@ -12,6 +12,14 @@ interface IUserBook extends IBaseBook {
     average_rating: number;
 }
 
+interface IRecommendedBook extends IBaseBook {
+    id: number;
+    title: string;
+    description: string;
+    url: string;
+    image_url: string;
+    average_rating: number;
+}
 
 interface IBookTask extends IBaseBook {
     task_id: string;
