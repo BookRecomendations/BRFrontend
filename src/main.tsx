@@ -7,11 +7,18 @@ import Books from "./pages/books/Books.tsx";
 import {DevSupport} from "@react-buddy/ide-toolbox";
 import {ComponentPreviews, useInitial} from "./dev";
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
+import PageLayout from "./pages/PageLayout.tsx";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Books/>
+        element: <PageLayout/>,
+        children: [
+            {
+                path: "/",
+                element: <Books/>
+            },
+        ]
     },
 ]);
 const queryClient = new QueryClient()

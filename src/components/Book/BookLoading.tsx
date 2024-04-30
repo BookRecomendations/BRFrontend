@@ -1,4 +1,3 @@
-import './BookLoading.css';
 import {Spin, Typography} from "antd";
 interface IProps {
     status: string;
@@ -7,12 +6,10 @@ interface IProps {
 
 const {Title, Text} = Typography;
 const BookLoading = ({status,message}:IProps) => {
-    // status = "status";
-    // message = "message";
     return (
         <>
-            <div className="book_loading">
-                <Spin/>
+            <div className="flex flex-col items-center justify-center h-full">
+                <Spin className="my-4"/>
                 <Title level={5}>{status}</Title>
                 <Text>{message}</Text>
             </div>

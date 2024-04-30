@@ -1,9 +1,8 @@
 import {Button, Flex, InputNumber, Spin, Typography} from "antd";
-import './Recommendations.css'
 import axios from "axios";
 import {useQuery} from "@tanstack/react-query";
-import {useState} from "react";
-import Book from "../Book/Book.tsx";
+import {useEffect, useState} from "react";
+import RecommendedBooks from "./RecommendedBooks.tsx";
 
 const {Text} = Typography;
 
@@ -12,8 +11,7 @@ interface IProps {
     selectedBooks: IUserBook[];
 }
 
-const fetchRecommendations = async (bookIds: number[], count: number) => {
-    bookIds = [1, 2, 3, 4, 5];
+const fetchRecommendations = async (bookIds: number[], count: number): Promise<IRecommendedBookWithTask[]> => {
     const response = await axios.post(`http://localhost:8000/recommendations/find_recommendations`, {
         ids: bookIds,
         k: count
@@ -32,22 +30,31 @@ const Recommendations = ({selectedBooks}: IProps) => {
         enabled: false,
     });
 
-    const sortedRecommendations = data?.sort((a, b) => b.similarity - a.similarity) ?? [];
+    const sortedRecommendations = data?.sort((a, b) => b.book.similarity - a.book.similarity) ?? [];
+
+    useEffect(() => {
+        if (isSuccess) {
+            window.scrollTo({
+                top: document.documentElement.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+    }, [isSuccess]);
 
     const handleFetchRecommendations = () => {
         refetch(); // This will refetch the data when the button is clicked
     };
 
     return (
-        <div className={"recommend-block"}>
+        <div className="mt-16 w-full mb-8">
             {isLoading && (
-                <Flex className="recommend-loading" align="center" justify="center">
+                <Flex className="my-4" align="center" justify="center">
                     <Spin/>
-                    <Text className="recommendations-loading__text">Szukanie rekomendacji...</Text>
+                    <Text className="ml-4">Szukanie rekomendacji...</Text>
                 </Flex>
             )}
 
-            <Flex className={"recommend-number"} align="center" justify="center" gap="small">
+            <Flex align="center" justify="center" gap="small">
                 <InputNumber addonBefore="Ilość rekomendacji: " min={2} max={10000} defaultValue={5}
                              onChange={value => {
                                  if (typeof value === 'number') {
@@ -55,23 +62,24 @@ const Recommendations = ({selectedBooks}: IProps) => {
                                  }
                              }}/>
             </Flex>
-            <Flex className="recommend-field" align="center" justify="center" gap="small">
-                <Button size="large" type="primary" onClick={handleFetchRecommendations}>
+            <Flex className="my-8" align="center" justify="center" gap="small">
+                <Button size="large" type="primary" onClick={handleFetchRecommendations}
+                        disabled={selectedBooks.length === 0}>
                     Znajdź remkomendacje
                 </Button>
             </Flex>
 
-            {isSuccess && (<>
-                    <Flex gap='large' wrap='wrap' style={{margin: 'auto'}}>
-                        {sortedRecommendations.map((recommendation, index) => (
-                            <Book key={index} book={recommendation} canBeSelected={false} selected={false}
-                                  toggleSelectedBook={() => {
-                                  }} similarity={recommendation.similarity}/>
-                        ))}
+            {isSuccess && (
+                <>
+                    <Flex gap='large' justify="center" wrap='wrap' style={{margin: 'auto'}}>
+                        <RecommendedBooks recommendedBooks={sortedRecommendations}/>
                     </Flex>
-                    <Flex align="center" justify="center" gap="small">
-                        <Text>Ilość trafionych rekomendacji względem informacji z datasetu</Text>
-                        <Text>{sortedRecommendations.reduce((acc, recommendation) => acc + (recommendation.is_in_similar_books ? 1 : 0), 0)} / {recommendationCount}</Text>
+                    <Flex className="mt-4" align="center" justify="center" gap="small">
+                        <Text className="text-xl">Ilość trafionych rekomendacji względem informacji z Goodreads&nbsp;
+                            {sortedRecommendations.reduce((acc, recommendation) =>
+                                acc + (recommendation.book.is_in_similar_books ? 1 : 0), 0)}/{recommendationCount}
+                        </Text>
+
                     </Flex>
                 </>
             )}

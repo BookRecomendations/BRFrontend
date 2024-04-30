@@ -1,12 +1,9 @@
-import {Breadcrumb, Layout, Menu, theme} from 'antd';
+import {Layout, theme, Typography} from 'antd';
 import {Outlet} from "react-router-dom";
 
 const {Header, Content, Footer} = Layout;
+const {Text} = Typography
 
-const items = new Array(3).fill(null).map((_, index) => ({
-    key: String(index + 1),
-    label: `nav ${index + 1}`,
-}));
 
 const PageLayout = () => {
     const {
@@ -14,7 +11,7 @@ const PageLayout = () => {
     } = theme.useToken();
 
     return (
-        <Layout>
+        <Layout className="min-w-screen min-h-screen">
             <Header
                 style={{
                     position: 'sticky',
@@ -25,21 +22,11 @@ const PageLayout = () => {
                     alignItems: 'center',
                 }}
             >
-                <div className="demo-logo"/>
-                <Menu
-                    theme="dark"
-                    mode="horizontal"
-                    defaultSelectedKeys={['2']}
-                    items={items}
-                    style={{flex: 1, minWidth: 0}}
-                />
+                <Text className="text-3xl text-white text-center w-full">
+                    System rekomendacji książek oparty o zawartość
+                </Text>
             </Header>
-            <Content style={{padding: '0 48px'}}>
-                <Breadcrumb style={{margin: '16px 0'}}>
-                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>List</Breadcrumb.Item>
-                    <Breadcrumb.Item>App</Breadcrumb.Item>
-                </Breadcrumb>
+            <Content className="px-16 py-8">
                 <div
                     style={{
                         padding: 24,
@@ -52,7 +39,7 @@ const PageLayout = () => {
                 </div>
             </Content>
             <Footer style={{textAlign: 'center'}}>
-                Ant Design ©{new Date().getFullYear()} Created by Ant UED
+                Dawid Kiełkowski ©{new Date().getFullYear()} Praca inżynierska
             </Footer>
         </Layout>
     );

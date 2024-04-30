@@ -1,7 +1,6 @@
 import {Button, Flex, Select, Space, Typography} from "antd";
 import FileDragger from "../../components/FileDragger/FileDragger.tsx";
 
-import './Books.css';
 import {useEffect, useState} from "react";
 import BookWrapper from "../../components/BookWrapper/BookWrapper.tsx";
 import Book from "../../components/Book/Book.tsx";
@@ -40,11 +39,10 @@ const Books = () => {
 
     return (
         <>
-            <Flex align={"center"} justify={"center"} vertical>
-                <Title level={1}>System rekomendacji książek oparty o zawartość</Title>
+            <Flex align="center" justify="center" vertical>
                 <Title level={2}>Twoje książki</Title>
                 <FileDragger setBooks={setImportedBooks}/>
-                <Flex gap={'large'} wrap={'wrap'} className={"books-list"}>
+                <Flex gap='large' wrap='wrap' justify="center" className="mt-8 m-auto">
                     {importedBooks.map((book) => (
                         book.status === "running" ?
                             <BookWrapper key={book.book_task?.book_id} book={book}
@@ -53,37 +51,38 @@ const Books = () => {
                             <Book
                                 key={book.book?.book_id}
                                 book={book.book!}
-                                canBeSelected={true}
                                 toggleSelectedBook={toggleSelectedBook}
                                 selected={selectedBooks.some(b => b.book_id === book.book?.book_id)}
                             />
                     ))}
                 </Flex>
-                {importedBooks.length > 0 && <>
-                    <Flex className="book-select" align="center" justify="center" gap="large">
-                        <Space.Compact>
-                            <Button onClick={() => selectBooksWithScoreAboveNumber(score)} type="primary">
-                                Zaznacz książki z oceną powyżej
+                {importedBooks.length > 0 &&
+                    <>
+                        <Flex className="mt-8" align="center" justify="center" gap="large">
+                            <Space.Compact>
+                                <Button onClick={() => selectBooksWithScoreAboveNumber(score)} type="primary">
+                                    Zaznacz książki z oceną powyżej
+                                </Button>
+                                <Select
+                                    options={
+                                        [
+                                            {label: "0", value: 0},
+                                            {label: "1", value: 1},
+                                            {label: "2", value: 2},
+                                            {label: "3", value: 3},
+                                            {label: "4", value: 4},
+                                            {label: "5", value: 5},
+                                        ]
+                                    }
+                                    value={score}
+                                    onChange={(value) => setScore(value)}/>
+                            </Space.Compact>
+                            <Button onClick={unselectAllBooks} type="primary">
+                                Odznacz wszystkie książki
                             </Button>
-                            <Select
-                                options={
-                                    [
-                                        {label: "1", value: 1},
-                                        {label: "2", value: 2},
-                                        {label: "3", value: 3},
-                                        {label: "4", value: 4},
-                                        {label: "5", value: 5},
-                                    ]
-                                }
-                                value={score}
-                                onChange={(value) => setScore(value)}/>
-                        </Space.Compact>
-                        <Button onClick={unselectAllBooks} type="primary">
-                            Odznacz wszystkie książki
-                        </Button>
-                    </Flex>
-                    <Recommendations selectedBooks={selectedBooks}/>
-                </>}
+                        </Flex>
+                        <Recommendations selectedBooks={selectedBooks}/>
+                    </>}
             </Flex>
         </>
     )
