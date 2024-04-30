@@ -1,25 +1,24 @@
-import {Layout, theme, Typography} from 'antd';
-import {Outlet} from "react-router-dom";
+import { Layout, theme, Typography } from "antd";
+import { Outlet } from "react-router-dom";
 
-const {Header, Content, Footer} = Layout;
-const {Text} = Typography
-
+const { Header, Content, Footer } = Layout;
+const { Text } = Typography;
 
 const PageLayout = () => {
     const {
-        token: {colorBgContainer, borderRadiusLG},
+        token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
 
     return (
         <Layout className="min-w-screen min-h-screen">
             <Header
                 style={{
-                    position: 'sticky',
+                    position: "sticky",
                     top: 0,
                     zIndex: 1,
-                    width: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
                 }}
             >
                 <Text className="text-3xl text-white text-center w-full">
@@ -35,14 +34,14 @@ const PageLayout = () => {
                         borderRadius: borderRadiusLG,
                     }}
                 >
-                    <Outlet/>
+                    <Outlet />
                 </div>
             </Content>
-            <Footer style={{textAlign: 'center'}}>
+            <Footer style={{ textAlign: "center" }}>
                 Dawid Kiełkowski ©{new Date().getFullYear()} Praca inżynierska
             </Footer>
         </Layout>
     );
-}
+};
 
 export default PageLayout;

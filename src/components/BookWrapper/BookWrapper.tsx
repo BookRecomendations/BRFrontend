@@ -1,10 +1,9 @@
-import {useQuery} from "@tanstack/react-query";
-import {useEffect, useState} from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import BookLoading from "../Book/BookLoading.tsx";
 import Book from "../Book/Book.tsx";
-import {Flex} from "antd";
-
+import { Flex } from "antd";
 
 interface IProps {
     book: IBookImportResult;
@@ -13,26 +12,26 @@ interface IProps {
 }
 
 const fetchBookStatus = async (task_id: string) => {
-    const response = await axios.get(`http://127.0.0.1:8000/books/status/${task_id}`);
+    const response = await axios.get(
+        `http://127.0.0.1:8000/books/status/${task_id}`
+    );
     console.log(response);
-    return response.data
-}
+    return response.data;
+};
 
-const BookWrapper = ({book, toggleSelectedBook, selected}: IProps) => {
-
+const BookWrapper = ({ book, toggleSelectedBook, selected }: IProps) => {
     const [bookStatus, setBookStatus] = useState<string | null>(null);
     const [userBook, setUserBook] = useState<IUserBook | null>(null);
 
-    const {data, isLoading, isSuccess} = useQuery({
-        queryKey: ['bookStatus', book.book_task!.book_id],
+    const { data, isLoading, isSuccess } = useQuery({
+        queryKey: ["bookStatus", book.book_task!.book_id],
         queryFn: () => fetchBookStatus(book.book_task!.task_id),
         refetchInterval: 3000,
         enabled: book.status === "running" && bookStatus != "SUCCESS",
     });
 
     useEffect(() => {
-        if (data)
-            setBookStatus(data.status ?? null)
+        if (data) setBookStatus(data.status ?? null);
         if (isSuccess && data.status === "SUCCESS") {
             console.log({
                 id: data.message.id,
@@ -59,14 +58,19 @@ const BookWrapper = ({book, toggleSelectedBook, selected}: IProps) => {
 
     return (
         <Flex className="h-full w-64" align="center" justify="center" vertical>
-            {isLoading && <BookLoading status="loading" message="loading"/>}
-            {isSuccess && data.status != "SUCCESS" && <BookLoading status={data.status} message={data.message}/>}
-            {isSuccess && userBook && data.status == "SUCCESS" &&
-                <Book book={userBook!} toggleSelectedBook={toggleSelectedBook}
-                      selected={selected}/>}
+            {isLoading && <BookLoading status="loading" message="loading" />}
+            {isSuccess && data.status != "SUCCESS" && (
+                <BookLoading status={data.status} message={data.message} />
+            )}
+            {isSuccess && userBook && data.status == "SUCCESS" && (
+                <Book
+                    book={userBook!}
+                    toggleSelectedBook={toggleSelectedBook}
+                    selected={selected}
+                />
+            )}
         </Flex>
-    )
-
-}
+    );
+};
 
 export default BookWrapper;
