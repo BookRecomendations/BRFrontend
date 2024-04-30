@@ -14,5 +14,5 @@ docker run -p 5173:5173 br-frontend
 
 ### Access the application
 ```
-http://localhost:8080
+http://localhost:5173
 ```
