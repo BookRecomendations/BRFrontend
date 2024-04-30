@@ -2,9 +2,14 @@
 
 Below are the steps to run the frontend using docker.
 
-### Build the container and then run it
+### Build the container
 ```bash
-docker build . -t "br-frontend" && docker run -p 8080:8080 br-frontend
+docker build . -t "br-frontend"
+```
+
+### Run the container
+```bash
+docker run -p 5173:5173 br-frontend
 ```
 
 ### Access the application
