@@ -1,6 +1,7 @@
 src/images
 src/assets
 src/dev
+dist
 node_modules
 public
 
